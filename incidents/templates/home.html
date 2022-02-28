@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTCG | CPCCS</title>
+    <link rel="stylesheet" href="{% static 'contact.css' %}">
+    <link rel="stylesheet" href="{% static 'popup.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/logo.png' %}">
+    <!--<script src="cpccs/incidents/templates/jquery.js"></script>-->
+   <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+    <!--<link rel="stylesheet" href="/cpccs/incidents/static/contact.css">-->
+    <!--<link rel="stylesheet" href="/cpccs/incidents/static/popup.css">-->
+    <script>
+        $(document).ready(function(){
+            $("#text_swa").hide();
+            $("#button_eng").hide();
+
+            $("#button_swa").click(function(){
+                $("#text_eng").hide();
+                $("#text_swa").show();
+                $("#button_swa").hide();
+                $("#button_eng").show();
+                document.getElementById("pop-title").innerHTML="Karibu"
+            });
+            $("#button_eng").click(function(){
+                $("#text_eng").show();
+                $("#button_eng").hide();
+                document.getElementById("pop-title").innerHTML="Welcome"
+                $("#text_swa").hide();
+                $("#button_swa").show();
+            });
+            $("#go").click(function(){
+                $(".popup").fadeOut(2000);
+            });
+
+        });
+
+
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="icon-logo">
+            <img class="logo" src="{% static 'images/logo.png' %}">
+            <h1>006 Digital County Ombudsman</h1>
+            <h3>County Public Complaints and Compliments System</h3>
+        </div>
+
+        <div class="summury">
+            <marquee behavior="scroll" direction="left">We would love to respond to your queries and help the county provide quality services. Feel free to get in touch</marquee>
+        </div>
+
+        <div class="box">
+            <div class="box-form">
+
+                <form action="/insert_data/" method="post" onsubmit="return validateform()" name ="myform">
+                {% csrf_token %}
+                    <fieldset>
+                        <legend>Reporter Details(for purposes of feedback)</legend>
+
+
+                            <div class="input-row row-reporter-details">
+                                <div class="input-col one">
+                                    <div class="input-group">
+                                        <label>Name</label>
+                                        <input type="text" id="name_of" placeholder="Enter your name" name="name_of">
+                                    </div>
+                                </div>
+
+                                <div class="input-col two">
+                                    <div class="input-group">
+                                        <label>Phone</label>
+                                        <input type="tel" maxlength="10" placeholder="Enter phone number" id="phone_of" name="phone_of" pattern="[0-9]{10}" >
+                                    </div>
+                                </div>
+
+                                <div class="input-col three">
+                                    <div class="input-group">
+                                        <label>Email</label>
+                                        <input type="text" id="email_of" name="email_of" placeholder="eg, user@gmail.com">
+                                    </div>
+                                </div>
+
+                                <div class="input-col four">
+                                    <div class="input-group">
+                                            <label>Gender</label>
+                                            <div>
+                                                <select class="form-control" id="gender_details" name="gender_details">
+                                                    <option value="Not Specified"> Please Specify (Tafadhali Thibitisha)</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </fieldset><bt></br>
+
+                    <fieldset>
+                        <legend>Report Details</legend>
+
+                        <!-- Second Row Date-->
+                        <div class="input-row row-date">
+                            <div class="input-col-date">
+                                    <div class="tarehe">
+                                        <label class="dtcaption">Date(Tarehe)</label>
+                                        <input type="date" class="input-date" id="occurence-date" name="occurence-date" value="">
+                                    </div><br>
+                            </div>
+                        </div>
+
+                        <!-- Third Row -->
+                        <div class="input-row row-report-details">
+                            <div class="input-col one">
+                                <div class="input-group">
+                                    <label>What are you reporting (unarepoti nini)</label>
+                                    <div>
+                                        <select class="form-control form-control-lg" id="incident_type" name="incident_type" required>
+                                            <option value="" disabled selected> Please Specify (Tafadhali Thibitisha)</option>
+                                            <option value="Compliments">Compliments/Pongezi</option>
+                                            <option value="Complaints">Complaints/Malalamishi</option>
+                                            <option value="Query">Query/Swali</option>
+                                            <option value="Suggestion">Suggestion/Pendekezo</option>
+                                            <option value="Corruption">Corruption/Ufisadi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-col two">
+                                <div class="input-group">
+
+                                    <label>Subcounty</label>
+                                    <div>
+                                        <select class="form-control" id="subcounty" name="subcounty" required onChange="display_ward_choices(this.value)">
+                                            <option value="" disabled selected> Please Specify (Tafadhali Thibitisha)</option>
+                                            <option value="Mwatate">Mwatate</option>
+                                            <option value="Voi">Voi</option>
+                                            <option value="Taveta">Taveta</option>
+                                            <option value="Wundanyi">Wundanyi</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <select class="form-control" style="padding-top: 8px;" id="wards" name="wards" required>
+                                            <option value="" disabled selected> Select ward</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-col three">
+                                <div class="input-group">
+                                    <label>Which department</label>
+                                    <div>
+                                       <select class="form-control form-control-lg" id="department" name="department" required>
+                                        <option value="" disabled selected> Please Specify (Tafadhali Thibitisha)</option>
+                                        {% for department_choices in departments %}
+                                        <option value="{{ department_choices.department_name }}">{{ department_choices.department_name }}</option>
+                                        {% endfor %}
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-col four">
+                                <div class="input-group">
+                                    <label for="location">Kisa kilitokea wapi</label>
+                                    <input type="text" class="form-control" id="location" placeholder="kisa kilitokea wapi" name="location">
+                                </div>
+                            </div>
+
+                        </div><br>
+
+                        <div class="input-row row-incident">
+                            <div class="incident">
+                                <textarea rows="5" placeholder="Explain your Incident/Suggestions/Complaints/Query(Elezea Tukio/Maoni/Malalamishi/Swali)" rows="5" id="description" name="description" required ></textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+
+                    <div class="submit">
+                        <button id="submitbtn" class="submt-btn" type="submit">Submit</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+        </div>
+            <div class="contact-right">
+            </div>
+
+    </div>
+    <!-- Popup messege -->
+    <div class="popup">
+        <!-- <button class="pop-btn"  id="close">&times;</button> -->
+        <h2 id="pop-title">Welcome</h2>
+        <p id="text_eng">
+            The County Government of Taita Taveta, Office of the Governor,
+            invites its citizens through this platform to share their complaints, make queries,
+            give suggestions and compliments on the issues affecting them in relation to the delivery of services.
+            Information shared will be treated with utmost confidentiality and used to improve the services.
+            Details of the persons giving information shall not be shared with any third party.
+            Queries will be responded to either to the individual or to the general public where applicable.
+        </p>
+        <p id="text_swa">
+            Serikali ya Taita Taveta, Ofisi ya Gavana, inawakaribisha wakaazi wote wenye malalamishi,
+            maswali au maoni na hata pongezi kujaza fomu hii.
+            Yale yote utakayoeleza yatachukuliwa kwa siri na kusaidia kuboresha utendakazi na hakuna habari ya utambulisho wa
+            yeyote utakaopeanwa kwa wengine wasiohusika.Maswali yote yatajibiwa kwa anaeuliza au kwa hadhara kulingana na swali.
+        </p>
+        <!--<a href="#" id='button' onclick="trans(),changebtn()">Swahili</a>-->
+        <a href="#" id='button_swa'>Swahili</a>
+        <a href="#" id='button_eng'>English</a>
+        <div class="footer ">
+            <a id="go" href="#">Ok</a>
+        </div>
+    </div>
+
+    <div class="popup2">
+
+        <h2>Thank You</h2>
+        <p id="text_two">
+            Thankyou for visiting this page
+        </p>
+        <!--<a href="#" id='button' onclick="trans(),changebtn()">Close</a>-->
+        <div class="footer ">
+            <a id="close" href="#">Ok</a>
+        </div>
+    </div>
+
+
+    <!--Script-->
+    <script type="text/javascript">
+        window.addEventListener("load", function(){
+             setTimeout(
+                function open(event){
+                    document.querySelector(".popup").style.display = "block";
+            },
+            1000
+                )
+        });
+        // document.querySelector("#close").addEventListener("click", function(){
+        //     document.querySelector(".popup").style.display = "none";
+        // });
+        document.querySelector("#go").addEventListener("click", function(){
+            // document.querySelector(".popup").style.display = "none";
+        });
+
+    // Second popup
+
+    window.addEventListener("load", function(){
+                 document.querySelector(".popup2").style.display = "none";
+                });
+
+    document.querySelector("#submitbtn").addEventListener("click", function(){
+            document.querySelector(".popup2").style.display = "block";
+        });
+
+    document.querySelector("#close").addEventListener("click", function(){
+            document.querySelector(".popup2").style.display = "none";
+        });
+
+    </script>
+
+    <script>
+        var wardChoices = {
+          Mwatate: ["Bura", "Chawia", "Mwatate", "Rong'e", "Wusi-Kishamba"],
+          Voi: ["Kasigau","Kaloleni", "Mbololo","Marungu", "Ngolia", "Sagalla"],
+          Taveta: ["Bomani", "Chala", "Mahoo", "Mata", "Mboghoni"],
+          Wundanyi:["Mwanda-Mghange", "Werugha", "Wumingu-Kishushe", "Wundanyi-Mbale"]
+          }
+
+      function display_ward_choices(value) {
+          if (value.length == 0) document.getElementById("wards").innerHTML = "<option></option>";
+          else {
+              var wardOptions = "";
+              for (wardId in wardChoices[value]) {
+                  wardOptions += "<option>" + wardChoices[value][wardId] + "</option>";
+              }
+              document.getElementById("wards").innerHTML = wardOptions;
+          }
+      }
+    </script><br>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags %}<script>alert("{{ message }}")</script>{% endif %}
+{% endfor %}
+{% endif %}
+</script>
+
+    <script type="text/javascript">
+        function validateForm() {
+          let x = document.forms["myForm"]["description"].value;
+          if (x == "") {
+            alert("Kindly give a brief description");
+            return false;
+          }
+        }
+    </script>
+
+    <!--My Jquery-->
+
+</body>
+</html>

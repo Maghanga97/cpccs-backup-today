@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Complaints and compliments system</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/css/bootstrap.min.css' %}">
+	<script src="styles/js/bootstrap.bundle.min.js"></script>  
+	<link rel="stylesheet" type="text/css" href="{% static 'base_style.css' %}">
+</head>
+<body>
+<div class="qfc-container">
+	<div><img  src="{% static 'images/logo.png' %}" class="mx-auto d-block"></div>
+	<h2 style="font-size:160%;">County Public Complaints and Compliments System </h2>
+{% block content %}
+
+{% endblock %}
+</div>
+
+</body>
+</html>

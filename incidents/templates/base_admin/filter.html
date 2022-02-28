@@ -1,0 +1,195 @@
+{% extends 'base_admin/department-admin.html' %}
+{% load static %}
+
+{% block username %} {{ user.user_name }} {% endblock %}
+{% block department %} {{ department.department_name}} {% endblock %}
+{% block incidents %} {{ incidents_count }} {% endblock %}
+{% block pending %} {{ pending }} {% endblock %}
+{% block assigned %} {{ assigned }} {% endblock %}
+{% block completed %} {{ completed }} {% endblock %}
+{% block recent_incidents_table %}
+<!-- Content Row -->
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-xs-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Recent Incidents</h4>
+        <table class="table">
+          <thead>
+            <th>Reference Number</th>
+            <th>Incident Type</th>
+            <th>Location</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            {% for incidents in incidents_pending %} 
+            <tr>
+              <td>{{ incidents.ref_no }}</td>
+              <td>{{ incidents.incident_type }}</td>
+              <td>{{ incidents.location }}</td>
+              <td>
+                <label class="badge badge-danger"
+                  >{{ incidents.status.status_name }}</label
+                >
+              </td>
+              <td>
+                <a
+                  href="/more-details/{{ user.id }}/{{ incidents.id }}/"
+                  ><button class="btn btn-link">View</button></a
+                >
+              </td>
+              <td>
+                <a href="/pdf/{{ incidents.id }}/"
+                  ><button class="btn btn-link">Download</button></a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- card body ends here -->
+    </div>
+    <!-- card div ends here -->
+  </div>
+  <!-- column div -->
+</div>
+<br /><!-- table row ends here -->
+{% endblock %}
+{% block assigned_incidents_table %}
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-xs-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Assigned Incidents</h4>
+        <table class="table">
+          <thead>
+            <th>Reference Number</th>
+            <th>Incident Type</th>
+            <th>Location</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            {% for incidents in incidents_assigned %}
+            <tr>
+              <td>{{ incidents.ref_no }}</td>
+              <td>{{ incidents.incident_type }}</td>
+              <td>{{ incidents.location }}</td>
+              <td>
+                <label class="badge badge-warning"
+                  >{{ incidents.status.status_name }}</label
+                >
+              </td>
+              <td>
+                <a
+                  href="/more-details/{{ user.id }}/{{ incidents.id }}/"
+                  ><button class="btn btn-link">View</button></a
+                >
+              </td>
+              <td>
+                <a href="/pdf/{{ incidents.id }}/"
+                  ><button class="btn btn-link">Download</button></a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- card body ends here -->
+    </div>
+    <!-- card div ends here -->
+  </div>
+  <!-- column div -->
+</div>
+<br /><!-- table row ends here -->
+{% endblock %}
+{% block completed_incidents_table %}
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-xs-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Completed Incidents</h4>
+        <table class="table">
+          <thead>
+            <th>Reference Number</th>
+            <th>Incident Type</th>
+            <th>Location</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            {% for incidents in incidents_completed %}
+            <tr>
+              <td>{{ incidents.ref_no }}</td>
+              <td>{{ incidents.incident_type }}</td>
+              <td>{{ incidents.location }}</td>
+              <td>
+                <label class="badge badge-success"
+                  >{{ incidents.status.status_name }}</label
+                >
+              </td>
+              <td>
+                <a
+                  href="/more-details/{{ user.id }}/{{ incidents.id }}/"
+                  ><button class="btn btn-link">View</button></a
+                >
+              </td>
+              <td>
+                <a href="/pdf/{{ incidents.id }}/"
+                  ><button class="btn btn-link">Download</button></a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- card body ends here -->
+    </div>
+    <!-- card div ends here -->
+  </div>
+  <!-- column div -->
+</div>
+<br /><!-- table row ends here -->
+{% endblock %}
+{% block users_table %}
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-xs-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Users</h4>
+        <table class="table">
+          <thead>
+            <th>Id</th>
+            <th>User Name</th>
+            <th>User Mail</th>
+            <th>Level</th>
+          </thead>
+          <tbody>
+            {% for get_user in user_list %}
+            <tr>
+              <td>{{ get_user.id }}</td>
+              <td>{{ get_user.user_name }}</td>
+              <td>{{ get_user.user_mail }}</td>
+              <td>{{ get_user.is_admin }}</td>
+              <td>
+                <a
+                  href="/view_user/{{ user.user_name }}/{{ get_user.id }}/"
+                  ><button class="btn btn-link">
+                    Edit User
+                  </button></a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- card body ends here -->
+    </div>
+    <!-- card div ends here -->
+  </div>
+  <!-- column div -->
+</div>
+<br /><!-- table row ends here -->
+{% endblock %}

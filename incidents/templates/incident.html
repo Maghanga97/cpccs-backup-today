@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="/insert_data/" method="POST">{% csrf_token %}
+    <div>
+        <p>
+        The County Government of Taita Taveta, Office of the Governor,
+        invites its citizens through this platform to share their complaints, make queries,
+        give suggestions and compliments on the issues affecting them in relation to the delivery of services.
+        Information shared will be treated with utmost confidentiality and used to improve the services.
+        Details of the persons giving information shall not be shared with any third party.
+        Queries will be responded to either to the individual or to the general public where applicable.<br><br>
+
+        (Serikali ya Taita Taveta, Ofisi ya Gavana,
+        inawakaribisha wakaazi wote wenye malalamishi,
+        maswali au maoni na hata pongezi kujaza fomu hii.
+        Yale yote utakayoeleza yatachukuliwa kwa siri na kusaidia kuboresha utendakazi na hakuna habari ya utambulisho wa yeyote utakaopeanwa kwa wengine wasiohusika.
+        Maswali yote yatajibiwa kwa anaeuliza au kwa hadhara kulingana na swali.)
+    </p>
+    </div>
+
+     <div>
+        <label for="name_of"><strong>Name (Jina)</strong>
+        <p style="font-size: 70%;">Optional - for purposes of feedback, otherwise write Anonymous</p></label>
+        <div>
+            <input type="text" id="name_of" name="name_of" placeholder="Your answer">
+        </div>
+    </div>
+
+    <div>
+        <label for="email_of"><strong>Email Address (Anuani Barua Pepe)</strong>
+        <p style="font-size: 70%;">Optional - for purposes of feedback</p></label>
+        <div>
+            <input type="email" id="email_of" name="email_of" placeholder="eg, user@gmail.com">
+        </div>
+    </div>
+
+    <div>
+        <label for="phone_of"><strong>Phone Number (Nambari ya simu)</strong>
+        <p style="font-size: 70%;">Optional - for purposes of feedback</p></label>
+        <div>
+            <input type="tel" id="phone_of" name="phone_of" pattern="[0-9]{10}">
+        </div>
+    </div>
+
+    <div>
+        <label><strong>Gender</strong></label>
+        <div>
+            {{ form_incidents.gender_details }}
+        </div>
+       </div><br>
+
+    <div>
+        <label><strong>What are you reporting (unarepoti nini)</strong></label>
+        <div>
+           <select id="incident_type" name="incident_type" required>
+           <option value="" disabled selected> Please Specify (Thafadhali Thibitisha)</option>
+           <option value="Compliments">Compliments/Pongezi</option>
+           <option value="Complaints">Complaints/Malalamishi</option>
+           <option value="Query">Query/Swali</option>
+           <option value="Suggestion">Suggestion/Pendekezo</option>
+           <option value="Corruption">Corruption/Ufisadi</option>
+          </select>
+        </div>
+       </div><br>
+
+        <div>
+        <label><strong>Subcounty</strong></label>
+        <div>
+           <select id="subcounty" name="subcounty" required onChange="display_ward_choices(this.value)">
+           <option value="" disabled selected> Please Specify (Thafadhali Thibitisha)</option>
+           <option value="Mwatate">Mwatate</option>
+           <option value="Taveta">Taveta</option>
+           <option value="Voi">Voi</option>
+           <option value="Wundanyi">Wundanyi</option>
+
+          </select>
+       </div><br>
+
+       <div>
+         <select name="wards" id="wards">
+              <option value="" disabled selected>Select ward</option>
+          </select>
+       </div>
+
+            <script>
+                var wardChoices = {
+                  Mwatate: ["Bura", "Chawia", "Mwatate", "Rong'e", "Wusi-Kishamba"],
+                  Voi: ["Kasigau","Kaloleni", "Mbololo","Marungu", "Ngolia", "Sagalla"],
+                  Taveta: ["Bomani", "Chala", "Mahoo", "Mata", "Mboghoni"],
+                  Wundanyi:["Mwanda-Mghange", "Werugha", "Wumingu-Kishushe", "Wundanyi-Mbale"]
+                  }
+
+              function display_ward_choices(value) {
+                  if (value.length == 0) document.getElementById("wards").innerHTML = "<option></option>";
+                  else {
+                      var wardOptions = "";
+                      for (wardId in wardChoices[value]) {
+                          wardOptions += "<option>" + wardChoices[value][wardId] + "</option>";
+                      }
+                      document.getElementById("wards").innerHTML = wardOptions;
+                  }
+              }
+            </script><br>
+        
+
+    <div>
+        <label for="location"><strong>Additional Information(Eneo Husika)</strong></label>
+        <div>
+            <input id="location" name="location" placeholder="Kisa kilitokea wapi">
+        </div>
+    </div>
+    <br>
+
+    <div>
+        <label><strong>Which department/Kitengo kipi/Wizara</strong></label>
+        <div>
+           <select id="department" name="department" required>
+           <option value="" disabled selected> Please Specify (Thafadhali Thibitisha)</option>
+              {% for department_choices in departments %}
+               <option value="{{ department_choices.department_name }}">{{ department_choices.department_name }}</option>
+               {% endfor %}
+          </select>
+       </div><br>
+
+    </div><br>
+         <div>
+               <label>When did it happen (Kisa kilifanyika lini)</label>
+             <input type="date" name="occurence-date" value="">
+           </div>
+
+        <div>
+            <label for="description"><strong>Maelezo zaidi(More Information)</strong></label>
+            <div>
+                <textarea class="form-control" rows="5" id="description" name="description" placeholder="Maelezo ya kisa"></textarea>
+            </div>
+        </div>
+        <br>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+
+</form>
+
+{% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

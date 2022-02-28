@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ incident.ref_no }}</title>
+  <style>
+        body {
+            background: black;
+        }
+
+        .qfc-container {
+            border-bottom: orange;
+            font-size: 2em;
+            font-family: 'Roboto', sans-serif;
+            background-color: white;
+            width: 850px;
+        }
+
+        .qfc-container div {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        .qfc-container h1,h2,h3,h4{
+          border-bottom: orange;
+          border-top: orange;
+        }        
+  </style>
+</head>
+<body>
+  <div class="qfc-container">
+    <div><img class="center"  src="/static/logo.png" height="200px"></div>
+    <h1 style="font-size:160%;" align="center"><strong>Incident Report</strong> </h1>
+    <div>
+        <strong>Reference No:</strong>{{ incident.ref_no }}<br>
+        <strong>Incident Type:</strong>{{ incident.incident_type }}<br>
+        <strong>Department:</strong>{{ incident.department.department_name }} <br>
+        <strong>Subcounty:</strong>{{ incident.subcounty }}<br>
+        <strong>Ward:</strong> {{ incident.wards }}<br>
+        <strong>Submitted By:</strong>{{ incident.name_of_complainant }}<br>
+        <strong>Phone No:</strong>{{ incident.phone_no }}<br>
+        <strong>Email Address:</strong>{{ incident.email_of_complainant }}<br>
+        <strong>Submitted On:</strong>{{ incident.incident_report_date }}<br>
+        <strong>Feedback Status:</strong>{{ incident.status.status_name }}<br>
+    </div>
+    <div>
+      <h3 align="center"><strong>Description</strong></h3>
+      <hr>
+      {{ incident.description }}
+    </div>
+    <div><img class="center"  src="{% static 'images/logo.png' %}" height="200px"></div>
+
+</div>
+
+</body>
+</html>
