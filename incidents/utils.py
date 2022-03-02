@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 import requests
 from requests.structures import CaseInsensitiveDict
+import json
 
 from xhtml2pdf import pisa
 
