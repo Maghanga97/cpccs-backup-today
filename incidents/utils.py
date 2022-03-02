@@ -25,5 +25,5 @@ def sendsms(phone, ref):
     headers["Content-Type"] = "application/json"
     data = {"mobile" : phone,"response_type": "json","sender_name":"23107","service_id" : 0,"message" : f"your reference number is: {ref}" }
     json_data = json.dumps(data)
-    resp = requests.post(url, headers=headers, data=data)
+    resp = requests.post(url, headers=headers, data=json_data)
     return(resp.status_code)
