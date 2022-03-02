@@ -23,6 +23,6 @@ def sendsms(phone, ref):
     headers = CaseInsensitiveDict()
     headers["h_api_key"] = "123b08dcc32921eaf7c87d15e4fda2c31f808fa5ab6709d8e7fc3878b34593a7"
     headers["Content-Type"] = "application/json"
-    data = '{"mobile" : {phone},"response_type": "json","sender_name":"23107","service_id" : 0,"message" : f"your reference number is: +{ref}"}'
+    data = '{"mobile" : {phone},"response_type": "json","sender_name":"23107","service_id" : 0,"message" : "your reference number is: +{ref}"}'
     resp = requests.post(url, headers=headers, data=data)
     return(resp.status_code)
