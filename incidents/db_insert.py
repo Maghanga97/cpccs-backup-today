@@ -157,7 +157,7 @@ def assign_user_incident(request):
                 feedback.save()
                 feedback.incident.add(new_assignment)
                 sendsms(new_assignment.phone, user_feedback)
-                messages.success(request, "Feedback to user will be implemented soon")
+                messages.success(request, "Your feedback has beensent to the reporter")
                 return HttpResponseRedirect(f'/{link_clicked}/{user.user_name}/{SESSION_KEY}')
             if not_null(user_feedback):
                 feedback = Feedback(user=user, reply= user_feedback)
