@@ -7,7 +7,7 @@ import datetime
 from .security import SESSION_KEY, hash_password, hash_phrase
 from django.contrib import messages
 from .utils import not_null
-# from .utils import sendsms
+from .utils import sendsms
 
 
 def fetch_inserted_ref_no():
@@ -60,7 +60,7 @@ def insert_function(request):
                                         wards=new_ward,
                                         status= status_load)
             db_inserter.save()
-            #sendsms(new_phone, generated_ref_no)
+            sendsms(new_phone, generated_ref_no)
             messages.success(request, 'Submitted successfuly, your reference number is :' + generated_ref_no)
             return HttpResponseRedirect('/')
     except Exception as insert_error:
