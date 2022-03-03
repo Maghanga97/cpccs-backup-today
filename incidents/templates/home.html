@@ -15,7 +15,29 @@
     <!--<link rel="stylesheet" href="/cpccs/incidents/static/contact.css">-->
     <!--<link rel="stylesheet" href="/cpccs/incidents/static/popup.css">-->
     <script>
-        
+         $(document).ready(function(){
+            $("#text_swa").hide();
+            $("#button_eng").hide();
+
+            $("#button_swa").click(function(){
+                $("#text_eng").hide();
+                $("#text_swa").show();
+                $("#button_swa").hide();
+                $("#button_eng").show();
+                document.getElementById("pop-title").innerHTML="Karibu"
+            });
+            $("#button_eng").click(function(){
+                $("#text_eng").show();
+                $("#button_eng").hide();
+                document.getElementById("pop-title").innerHTML="Welcome"
+                $("#text_swa").hide();
+                $("#button_swa").show();
+            });
+            $("#go").click(function(){
+                $(".popup").fadeOut(2000);
+            });
+
+        });
 
     </script>
 </head>
@@ -270,32 +292,7 @@
     </script><br>
 {% if messages %}
 {% for message in messages %}
-{% if message.tags %}<script>
-    $(document).ready(function(){
-            $("#text_swa").hide();
-            $("#button_eng").hide();
-
-            $("#button_swa").click(function(){
-                $("#text_eng").hide();
-                $("#text_swa").show();
-                $("#button_swa").hide();
-                $("#button_eng").show();
-                document.getElementById("pop-title").innerHTML="Karibu"
-            });
-            $("#button_eng").click(function(){
-                $("#text_eng").show();
-                $("#button_eng").hide();
-                document.getElementById("pop-title").innerHTML="Welcome"
-                $("#text_swa").hide();
-                $("#button_swa").show();
-            });
-            $("#go").click(function(){
-                $(".popup").fadeOut(2000);
-            });
-
-        });
-
-    alert("{{ message }}")</script>{% endif %}
+{% if message.tags %}<script>alert("{{ message }}")</script>{% endif %}
 {% endfor %}
 {% endif %}
 </script>
