@@ -37,8 +37,10 @@
 
     <div>
         <label for="feedback"><strong>Feedback:</strong></label>
-        <textarea class="form-control" rows="5" id="feedback" name="feedback"></textarea>
-      </div><br>
+        <textarea maxlength="160" class="form-control" rows="2" id="feedback" name="feedback" onkeyup="countChars('data','charcount');" onkeydown="countChars('data','charcount');" onmouseout="countChars('data','charcount')""></textarea>
+        <div id="limit">
+          Max = 160 chars
+      </div>
     </div>
 
 
@@ -94,6 +96,19 @@
   }
 
 </script>
+<!-- Count Characters -->
+<script type="text/javascript">
+  function countChars(countfrom,displayto) {
+    var len = document.getElementById("feedback").value.length;
+    var str= document.getElementById("limit");
+    str.innerHTML = "(Max char = 160)"+" "+ len;
+    if(len==160){
+                str.innerHTML = len+" "+"Maximum characters reached.";
+            }else{
+                str.innerHTML= "(Max = 160 chars)"+" "+ "("+len+")";
+            }
+  }
+  </script>
 
 {% if messages %}
         {% for message in messages %}
