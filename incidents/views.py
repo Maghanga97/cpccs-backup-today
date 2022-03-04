@@ -6,6 +6,7 @@ from django.contrib import messages
 from .utils import render_to_pdf
 from django.template.loader import get_template
 from .utils import not_null
+import datetime
 
 
 def incidents_view(request):
@@ -19,7 +20,7 @@ def add_department(request, dept_session_key=None):
         return render(request, 'base_admin/department-registration.html', {})
     else:
         return HttpResponse("You need authorization from a registered user")
-
+    
 
 def registration_view(request, reg_session_key=None):
     if reg_session_key == SESSION_KEY:
@@ -28,12 +29,12 @@ def registration_view(request, reg_session_key=None):
         return render(request, 'base_admin/register-admin.html', {'departments': departments, 'levels':levels})
     else:
         return HttpResponse("You need authorization from a registered user")
-
+    
 
 def login(request):
     try:
         if request.method== 'POST':
-            requesting_user = request.POST.get('username')
+            requesting_user = request.POST.get('username').lower()
             requesting_user_password= request.POST.get('password')
             user_authentication= authenticated(requesting_user, requesting_user_password)
             try:
@@ -41,10 +42,10 @@ def login(request):
                     user = CountyUsers.objects.get(user_name=requesting_user)
                     if user.level.name == 'super admin' :
                         return HttpResponseRedirect(f'/main-dashboard/{requesting_user}/{SESSION_KEY}/')
-                    return HttpResponseRedirect(f'/admin-dashboard/{requesting_user}/{SESSION_KEY}/')
+                    return HttpResponseRedirect(f'/admin-dashboard/{requesting_user}/{SESSION_KEY}/')                                            
                 else:
                     messages.error(request, user_authentication)
-                    return HttpResponseRedirect('/login/')
+                    return HttpResponseRedirect('/login/') 
             except Exception as login_error:
                 messages.error(request, login_error)
                 return HttpResponseRedirect('/login/')
@@ -53,7 +54,7 @@ def login(request):
                 return HttpResponseRedirect('/login/')
     return render(request, 'base_admin/login.html', {})
 
-
+ 
 def admin_view(request, user, session):
     if session == SESSION_KEY:
         get_user= CountyUsers.objects.get(user_name=user)
@@ -84,26 +85,26 @@ def admin_view(request, user, session):
                         'user_details': get_user_admin_status,
                         'users':number_of_users,
                         'user_list': users,
-                        'session' : SESSION_KEY,
+                        'session' : SESSION_KEY, 
                         'pending': pending_incidents,
                         'completed': number_of_incidents_completed,
                         'incidents': display_incidents,
                         'assigned' : number_of_incidents_assigned,
                         'assigned_to_admin': incidents_assigned_to_user,
                         'incidents_count': total_filtered_incidents}
-        user_context= {'user': get_user, 'assigned': number_of_incidents_assigned_to_user, 'link_tag': 'admin-dashboard',
-                        'session': SESSION_KEY,
-                        'completed': number_of_incidents_completed_by_user,
-                        'incidents': incidents_assigned_to_user,
+        user_context= {'user': get_user, 'assigned': number_of_incidents_assigned_to_user, 'link_tag': 'admin-dashboard', 
+                        'session': SESSION_KEY, 
+                        'completed': number_of_incidents_completed_by_user, 
+                        'incidents': incidents_assigned_to_user, 
                         'display_incidents': display_incidents_assigned_to_user }
-
+                                                            
         if get_user_admin_status == True:
-            return render(request,'base_admin/department-admin.html',admin_context)
+            return render(request,'base_admin/department-admin/department-admin.html',admin_context) 
         else:
-            return render(request,'base_admin/department.html',user_context)
+            return render(request,'base_admin/officer/department.html',user_context)
     else:
         return HttpResponse("Login required")
-
+  
 def main_admin_panel(request, user, session):
     if session == SESSION_KEY:
         department = request.GET.get('department')
@@ -133,7 +134,7 @@ def main_admin_panel(request, user, session):
         departments = CountyDepartments.objects.all()
         number_of_departments = departments.count()
         number_of_users= users.count()
-        return render(request, 'base_admin/main.html',{'incidents': display_incidents,
+        return render(request, 'base_admin/super-admin/main.html',{'incidents': display_incidents,
                                                                     'count_incidents': count_incidents,
                                                                     'dep_count': number_of_departments,
                                                                     'departments': departments,
@@ -153,7 +154,7 @@ def details(request, clicked_from, user, incident):
     get_incident= incident
     get_user = user
     incident= IncidencesTable.objects.get(id=int(get_incident))
-    user = CountyUsers.objects.get(id=int(get_user))
+    user = CountyUsers.objects.get(id=int(get_user))    
     department= incident.department.id
     get_users= CountyUsers.objects.filter(department_id=department)
     feedback = Feedback.objects.filter(incident=incident)
@@ -162,28 +163,28 @@ def details(request, clicked_from, user, incident):
 def incidents_list(request, clicked_from, get_user, incident_status):
     status = IncidentStatus.objects.get(status_name = incident_status)
     incidents = IncidencesTable.objects.filter(status = status)
-    user = CountyUsers.objects.get(id=int(get_user))
-    return render(request, 'base_admin/main-incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+    user = CountyUsers.objects.get(id=int(get_user))    
+    return render(request, 'base_admin/super-admin/main-incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
 
 def incidents_types(request, clicked_from, get_user, incident_type):
     incidents = IncidencesTable.objects.filter(incident_type = incident_type)
-    user = CountyUsers.objects.get(id=int(get_user))
-    return render(request, 'base_admin/main-incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+    user = CountyUsers.objects.get(id=int(get_user))    
+    return render(request, 'base_admin/super-admin/main-incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
 
 
 def department_incidents_types(request, clicked_from, get_user, incident_type):
     user = CountyUsers.objects.get(id=int(get_user))
-    department = CountyDepartments.objects.get(id = int(user.department.id))
+    department = CountyDepartments.objects.get(id = int(user.department.id))    
     incidents = IncidencesTable.objects.filter(incident_type = incident_type, department=department)
-    return render(request, 'base_admin/incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+    return render(request, 'base_admin/department-admin/incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
 
 
 def department_incidents(request, clicked_from, get_user, incident_status):
     user = CountyUsers.objects.get(id=int(get_user))
-    department = CountyDepartments.objects.get(id = int(user.department.id))
+    department = CountyDepartments.objects.get(id = int(user.department.id))    
     status = IncidentStatus.objects.get(status_name = incident_status)
     incidents = IncidencesTable.objects.filter(status = status, department=department)
-    return render(request, 'base_admin/incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+    return render(request, 'base_admin/department-admin/incidents.html', {'incidents': incidents,'user': user, 'session': SESSION_KEY, 'link_tag': clicked_from})
 
 
 def edit_user_view(request, admin, user_id, clicked_from):
@@ -194,11 +195,88 @@ def manage_users(request,link_tag, department, user_id):
     user = CountyUsers.objects.get(id=int(user_id))
     if department == "All":
         users = CountyUsers.objects.all()
-        return render(request, 'base_admin/all-users.html', {'users': users, 'user' : user, 'session': SESSION_KEY, 'link_tag': link_tag})
+        return render(request, 'base_admin/super-admin/all-users.html', {'users': users, 'user' : user, 'session': SESSION_KEY, 'link_tag': link_tag})
     else:
         users_department = CountyDepartments.objects.get(id=int(department))
         users = CountyUsers.objects.filter(department=users_department)
-        return render(request, 'base_admin/manage-users.html', {'user' : user, 'users': users, 'session': SESSION_KEY, 'link_tag': link_tag})
+        return render(request, 'base_admin/department-admin/manage-users.html', {'user' : user, 'users': users, 'session': SESSION_KEY, 'link_tag': link_tag})
+
+def search_incident(request, clicked_from, user_id):
+    user = CountyUsers.objects.get(id=int(user_id))
+    if clicked_from == "main-dashboard":
+        return render(request, 'base_admin/super-admin/main-search.html', { 'user' : user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+    else:
+        return render(request, 'base_admin/department-admin/search.html', {'user' : user, 'session': SESSION_KEY, 'link_tag': clicked_from})
+
+def search_results(request):
+        reference_no = request.GET.get('reference_no')
+        clicked_from = request.GET.get('clicked-from')
+        name_of_complainant = request.GET.get('name-of')
+        phone_of_complainant = request.GET.get('phone-of')
+        user = request.GET.get('user-id')
+        user = CountyUsers.objects.get(id=int(user))
+        gender_of_complainant = request.GET.get('gender')
+        reported_on = request.GET.get('reported-on')
+        incident_type= request.GET.get('incident-type')
+        processing_status = request.GET.get('status')
+        subcounty = request.GET.get('subcounty')
+        wards = request.GET.get('wards')
+        results = []
+        if not_null(reference_no):
+            result = {}
+            ref_result = IncidencesTable.objects.filter(ref_no=reference_no)
+            result['filter_tag'] = 'Search result of reference number'
+            result['data'] = ref_result
+            results.append(result)
+        if not_null(name_of_complainant):
+            result = {}
+            name_result = IncidencesTable.objects.filter(name_of_complainant=name_of_complainant)
+            result['filter_tag'] = 'Filtered by the name of the complainant'
+            result['data'] = name_result
+            results.append(result)
+        if not_null(phone_of_complainant):
+            result = {}
+            phone_result = IncidencesTable.objects.filter(phone_no= phone_of_complainant)
+            result['filter_tag'] = 'Filtered by the phone number of complainant'
+            result['data'] = phone_result
+            results.append(result)
+        if not_null(gender_of_complainant):
+            result = {}
+            gender_result = IncidencesTable.objects.filter(gender= gender_of_complainant)
+            result['filter_tag'] = 'Filtered by gender'
+            result['data'] = gender_result
+            results.append(result)
+        if not_null(reported_on):
+            result = {}
+            reported_on = datetime.datetime.strptime(reported_on, '%Y-%m-%d')
+            reported_on = reported_on.strftime('%d/%m/%Y')
+            date_result = IncidencesTable.objects.filter(incident_report_date__startswith=reported_on)
+            result['filter_tag'] = f'Incidents submitted on {reported_on} '
+            result['data'] = date_result
+            results.append(result)
+        if not_null(incident_type):
+            result = {}
+            type_result = IncidencesTable.objects.filter(incident_type=incident_type)
+            result['filter_tag'] = incident_type
+            result['data'] = type_result
+            results.append(result)
+        if not_null(processing_status):
+            result = {}
+            status = IncidentStatus.objects.get(status_name=processing_status.lower())
+            status_result = IncidencesTable.objects.filter(status=status)
+            result['filter_tag'] = f'{processing_status} incidents'
+            result['data'] = status_result
+            results.append(result)
+        if not_null(subcounty):
+            result = {}
+            location_result = IncidencesTable.objects.filter(wards=wards)
+            result['filter_tag'] = f'{wards} incidents'
+            result['data'] = location_result
+            results.append(result)
+        if clicked_from == 'main-dashboard':    
+            return render(request, 'base_admin/super-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from})
+        else:
+            return render(request, 'base_admin/department-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from})
 
 
 
