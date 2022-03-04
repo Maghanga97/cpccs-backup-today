@@ -1,0 +1,149 @@
+{% extends 'base_admin/department-admin/department-admin.html' %}
+{% block department %} {{ user.department.department_name }} {% endblock %}
+{% block content %}
+{% load static %}
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Search for Incident</h4>
+                  <form action="/search-results/" method="GET" class="form-sample">
+                    <b><p class="card-description">Search by:</p></b>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Reference Number:</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="reference_no" name="reference_no" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" name="user-id" value="{{ user.id }}">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Name of complainant:</label>
+                          <div class="col-sm-9">
+                            <input type="text" id="name-of" name="name-of" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Phone number of complainant:</label>
+                          <div class="col-sm-9">
+                            <input type="tel" id="phone-of" name="phone-of" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Gender of Complainant:</label>
+                          <div class="col-sm-9">
+                            <select id="gender" name="gender" class="form-control">
+                              <option value="">Select gender</option>
+                              <option>Male</option>
+                              <option>Female</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date reported:</label>
+                          <div class="col-sm-9">
+                            <input type="date" id="reported-on" name="reported-on" class="form-control" placeholder="dd/mm/yyyy"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Incident Type:</label>
+                          <div class="col-sm-9">
+                            <select id="incident-type" name="incident-type" class="form-control">
+                              <option value="">Select the type incident</option>
+                              <option>Complaints</option>
+                              <option>Compliments</option>
+                              <option>Query</option>
+                              <option>Suggestions</option>
+                              <option>Corruption</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Status:</label>
+                          <div class="col-sm-9">
+                            <select id="status" name="status" class="form-control">
+                              <option value="">Select status</option>
+                              <option>Pending</option>
+                              <option>Addressed</option>
+                              <option>Assigned</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <input type="hidden" name="clicked-from" value="{{ link_tag }}">
+                    <b><p class="card-description">Search by location</p></b>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Subcounty</label>
+                          <div class="col-sm-9">
+                            <select id="subcounty" name="subcounty" class="form-control" onchange="display_ward_choices(this.value)">
+                              <option value="">Select subcounty</option>
+                              <option>Mwatate</option>
+                              <option>Voi</option>
+                              <option>Taveta</option>
+                              <option>Wundanyi</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Ward</label>
+                          <div class="col-sm-9">
+                            <select id="wards" name="wards" class="form-control">
+                              <option value="">Select ward</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button class="btn btn-warning" type="submit">Submit</button>
+                    </div>            
+                  </form>
+                </div>
+              </div>
+            </div>
+
+    <script>
+        var wardChoices = {
+          Mwatate: ["Bura", "Chawia", "Mwatate", "Rong'e", "Wusi-Kishamba"],
+          Voi: ["Kasigau","Kaloleni", "Mbololo","Marungu", "Ngolia", "Sagalla"],
+          Taveta: ["Bomani", "Chala", "Mahoo", "Mata", "Mboghoni"],
+          Wundanyi:["Mwanda-Mghange", "Werugha", "Wumingu-Kishushe", "Wundanyi-Mbale"]
+          }
+
+      function display_ward_choices(value) {
+          if (value.length == 0) document.getElementById("wards").innerHTML = "<option></option>";
+          else {
+              var wardOptions = "";
+              for (wardId in wardChoices[value]) {
+                  wardOptions += "<option>" + wardChoices[value][wardId] + "</option>";
+              }
+              document.getElementById("wards").innerHTML = wardOptions;
+          }
+      }
+    </script><br>
+
+{% endblock %}
