@@ -274,9 +274,9 @@ def search_results(request):
             result['data'] = location_result
             results.append(result)
         if clicked_from == 'main-dashboard':    
-            return render(request, 'base_admin/super-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from})
+            return render(request, 'base_admin/super-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from, 'session': SESSION_KEY})
         else:
-            return render(request, 'base_admin/department-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from})
+            return render(request, 'base_admin/department-admin/search-results.html', {'results': results, 'user' : user, 'link_tag': clicked_from, 'session': SESSION_KEY})
 
 
 
