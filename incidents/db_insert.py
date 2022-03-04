@@ -60,8 +60,9 @@ def insert_function(request):
                                         wards=new_ward,
                                         status= status_load)
             db_inserter.save()
-            sendsms(new_phone, generated_ref_no)
-            messages.success(request, 'Submitted successfuly, your reference number is :' + generated_ref_no)
+            msg = "Your concern has been submitted successfuly, your reference number is {generated_ref_no}"
+            sendsms(new_phone, msg)
+            messages.success(request, msg)
             return HttpResponseRedirect('/')
     except Exception as insert_error:
         messages.error(request, insert_error)
