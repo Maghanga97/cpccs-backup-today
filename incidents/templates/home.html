@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'popup.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="icon" href="{% static 'images/logo.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base_admin/css/login.css' %}">
     <!--<script src="cpccs/incidents/templates/jquery.js"></script>-->
    <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
     <!--<link rel="stylesheet" href="/cpccs/incidents/static/contact.css">-->
@@ -44,6 +45,10 @@
 <body>
 
     <div class="container">
+        <div style="">
+            <a id="loginbtn" style="text-align: right;position: absolute;color:#00A652; padding: 5px;right: 40px;">Login</a>
+        </div>
+
         <div class="icon-logo">
             <img class="logo" src="{% static 'images/logo.png' %}">
             <h1>006 Digital County Ombudsman</h1>
@@ -307,7 +312,90 @@
         }
     </script>
 
-    <!--My Jquery-->
+ <!-- The Modal -->
+ <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2></h2>
+      </div>
+      <div class="modal-body">
+        <div class="pt-5">  
+          <div class="global-container">  
+            <div class="card login-form">  
+              <div class="card-body">
+                <div><img  src="{% static 'images/logo.png' %}" height="100" class="mx-auto d-block"></div>  
+                <h3 class="card-title text-center">Admin Login</h3>  
+                <div class="card-text">  
+                  <form class="pt-3" action="/login/" method="POST"> {% csrf_token %}  
+                    <div class="form-group">  
+                      <!-- <label for="exampleInputEmail1"> Enter Email address </label>   -->
+                      <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Username" required>  
+                    </div>  
+                    <div class="form-group">  
+                      <!-- <label for="exampleInputPassword1">Enter Password </label>   -->  
+                      <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password" required>  
+                      <a href="#" style="float:right;font-size:12px;"> Forgot password? </a>
+                    </div>  
+                    <button class="btn btn-block btn-warning btn-lg font-weight-medium auth-form-btn" type="submit">LOG IN</button> 
+                   
+                  </form>  
+                </div>  
+              </div>
+            </div>
+          </div>  
+        </div>  
+      </div>  
+      <div class="modal-footer">
+        <h3></h3>
+      </div>
+    </div>
+  
+  </div>
+  
+  <script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  
+  // Get the button that opens the modal
+  var btn = document.getElementById("loginbtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+  
+  
+      <script>
+    {% for error_msg in messages %}
+     window.alert("{{ error_msg }}");
+    {% endfor %}
+    </script>
+    <script src="../../vendors/base/vendor.bundle.base.js"></script>
+    <script src="../../js/off-canvas.js"></script>
+    <script src="../../js/hoverable-collapse.js"></script>
+    <script src="../../js/template.js"></script>
+    <script src="../../js/todolist.js"></script>
+
+</body>
 
 </body>
 </html>
