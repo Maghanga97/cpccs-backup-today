@@ -317,8 +317,10 @@
           <div class="global-container">  
             <div class="card login-form">  
               <div class="card-body">
-                <div><img  src="{% static 'images/logo.png' %}" height="100" class="mx-auto d-block"></div>  
-                <h3 class="card-title text-center">Admin Login</h3>  
+                <div class="center">
+                    <img  src="{% static 'images/logo.png' %}" height="100" class="mx-auto d-block"> 
+                    <h3 class="title">Admin Login</h3> 
+                </div>
                 <div class="card-text">  
                   <form class="pt-3" action="/login/" method="POST"> {% csrf_token %}  
                     <div class="form-group">  

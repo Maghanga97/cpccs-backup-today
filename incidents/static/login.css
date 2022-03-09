@@ -47,6 +47,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
     float: right;
     font-size: 28px;
     font-weight: bold;
+    margin-top: -12px;
 }
 
 .close:hover,
@@ -57,7 +58,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 .modal-header {
-    padding: 2px 16px;
+    padding: 12px 16px;
     background-color:#00A250;
     color: white;
 }
@@ -68,7 +69,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
     padding: 2px 16px;
     background-color:#00A250;
     color: #00A250;
-    height: 30px;
+    height: 20px;
+}
+.center{
+    text-align: center;
+}
+.center .title{
+    text-align: center;
 }
 
 /*My css  */
