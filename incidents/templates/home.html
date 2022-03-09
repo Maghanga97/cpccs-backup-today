@@ -302,15 +302,6 @@
 {% endif %}
 </script>
 
-    <script type="text/javascript">
-        function validateForm() {
-          let x = document.forms["myForm"]["description"].value;
-          if (x == "") {
-            alert("Kindly give a brief description");
-            return false;
-          }
-        }
-    </script>
 
  <!-- The Modal -->
  <div id="myModal" class="modal">
@@ -380,6 +371,9 @@
     if (event.target == modal) {
       modal.style.display = "none";
     }
+  }
+  window.onload=function(){
+      modal.style.display ="none";
   }
   </script>
   
