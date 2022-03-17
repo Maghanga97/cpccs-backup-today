@@ -197,6 +197,9 @@ textarea{
     /* margin-top: 10px; */
     /* box-sizing: border-box; */
 }
+#loginbtn:hover{
+    cursor:pointer;
+}
 
 
 
