@@ -118,6 +118,9 @@ font-weight: 300;
 .btn{
   background: #EA7E26;
 }
+a:hover{
+    cursor: pointer;
+}
 /* .form-group input{
   border-top: none;
   border-left: none;
