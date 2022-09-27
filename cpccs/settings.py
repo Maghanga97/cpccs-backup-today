@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-8!1r^9onvf%n9(+*ph_%2n3uzi%wq_ov2bm!4y+q1@$qdy0$0p
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['cpccs.herokuapp.com']
+ALLOWED_HOSTS = ['cpccs.herokuapp.com','ttcg-sema.herokuapp.com']
 
 
 # Application definition
