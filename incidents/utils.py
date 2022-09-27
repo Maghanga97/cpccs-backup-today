@@ -22,7 +22,7 @@ def not_null(param):
 def sendsms(phone, message):
     url = "https://api.mobitechtechnologies.com/sms/sendsms"
     headers = CaseInsensitiveDict()
-    headers["h_api_key"] = "123b08dcc32921eaf7c87d15e4fda2c31f808fa5ab6709d8e7fc3878b34593a7"
+    headers["h_api_key"] = "373a889e83bef0fda31e496b7ed5e4378e2de25fb6d2207c00a457774ff4876a"
     headers["Content-Type"] = "application/json"
     data = {"mobile" : phone,"response_type": "json","sender_name":"23107","service_id" : 0,"message" : message }
     json_data = json.dumps(data)
